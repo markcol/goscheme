@@ -35,8 +35,9 @@ func main() {
 	}
 }
 
+// Repl is the read-eval-print loop for goschemee.
 func Repl() {
-	fmt.Printf("Welcome to the Lisp REPL\n")
+	fmt.Printf("Welcome to the GoScheme REPL\n")
 	reader := bufio.NewReader(os.Stdin)
 	expr := ""
 	for {
@@ -52,10 +53,10 @@ func Repl() {
 			expr = ""
 		} else if openCount == closeCount {
 			if strings.TrimSpace(expr) != "" {
-				if response, err := lisp.EvalString(expr); err != nil {
+				if response, err := goscheme.EvalString(expr); err != nil {
 					fmt.Printf("ERROR: %v\n", err)
 				} else {
-					if response == lisp.Nil {
+					if response == goscheme.Nil {
 						fmt.Println(";Unspecified return value")
 					} else {
 						fmt.Printf(";Value: %v\n", response.Inspect())

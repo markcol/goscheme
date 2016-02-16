@@ -51,6 +51,7 @@ func (v Value) Cons() Cons {
 	return Cons{&v, &Nil}
 }
 
+// Eval evaluates the results of a Value.
 func (v Value) Eval() (Value, error) {
 	switch v.typ {
 	case consValue:
@@ -69,6 +70,19 @@ func (v Value) Eval() (Value, error) {
 	}
 }
 
+// Inspect displays the contents of a Value for debugging.
+func (v Value) Inspect() string {
+	switch v.typ {
+	case stringValue:
+		return fmt.Sprintf(`"%v"`, v.val)
+	case vectorValue:
+		return v.val.(Vector).Inspect()
+	default:
+		return v.String()
+	}
+}
+
+// Number displays the contents of a numeric value.
 func (v Value) Number() float64 {
 	return v.val.(float64)
 }

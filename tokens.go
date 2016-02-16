@@ -6,6 +6,7 @@ import (
 	"strconv"
 )
 
+// Tokens is a slice of Token pointers.
 type Tokens []*Token
 
 type tokenType uint8

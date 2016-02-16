@@ -53,7 +53,8 @@ func TestEval(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		if actual, err := EvalString(test.in); err != nil {
+		actual, err := EvalString(test.in)
+		if err != nil {
 			t.Error(err)
 		} else if fmt.Sprintf("%v", actual) != test.out {
 			t.Errorf("Eval \"%v\" gives \"%v\", want \"%v\"", test.in, actual, test.out)

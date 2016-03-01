@@ -6,25 +6,9 @@ import (
 	"strconv"
 )
 
-// Tokens is a slice of Token pointers.
-type Tokens []*Token
-
 type tokenType uint8
 
-type Token struct {
-	typ tokenType
-	val string
-}
-
-type Pattern struct {
-	typ    tokenType
-	regexp *regexp.Regexp
-}
-
-func (t Token) String() string {
-	return fmt.Sprintf("%v", t.val)
-}
-
+// Token type constants
 const (
 	whitespaceToken tokenType = iota
 	commentToken
@@ -33,10 +17,34 @@ const (
 	openToken
 	closeToken
 	symbolToken
+	poundOpenToken
+	quoteToken
+	backQuoteToken
+	commaToken
+	commaAtToken
+	dotToken
 )
 
-func patterns() []Pattern {
-	return []Pattern{
+// Token defines a Scheme token and it's contents.
+type Token struct {
+	typ tokenType
+	val string
+}
+
+// Tokens is a slice of Token pointers.
+type Tokens []*Token
+
+type pattern struct {
+	typ    tokenType
+	regexp *regexp.Regexp
+}
+
+func (t Token) String() string {
+	return fmt.Sprintf("%v", t.val)
+}
+
+func patterns() []pattern {
+	return []pattern{
 		{whitespaceToken, regexp.MustCompile(`^\s+`)},
 		{commentToken, regexp.MustCompile(`^;.*`)},
 		{stringToken, regexp.MustCompile(`^("(\\.|[^"])*")`)},
@@ -47,6 +55,8 @@ func patterns() []Pattern {
 	}
 }
 
+// NewTokens returns a Token stream parsed from the current input.
+// TODO(markcol): Convert to use io.Reader interface.
 func NewTokens(program string) (tokens Tokens) {
 	for pos := 0; pos < len(program); {
 		for _, pattern := range patterns() {
@@ -93,6 +103,7 @@ func (tokens Tokens) Expand() (result Tokens, err error) {
 	return
 }
 
+// Parse parses the Tokens
 func (tokens Tokens) Parse() (cons Cons, err error) {
 	var pos int
 	var current *Cons
@@ -101,9 +112,9 @@ func (tokens Tokens) Parse() (cons Cons, err error) {
 			cons = Cons{&Nil, &Nil}
 			current = &cons
 		} else {
-			previous_current := current
+			prev := current
 			current = &Cons{&Nil, &Nil}
-			previous_current.cdr = &Value{consValue, current}
+			prev.cdr = &Value{consValue, current}
 		}
 		t := tokens[pos]
 		switch t.typ {
@@ -143,10 +154,10 @@ func (tokens Tokens) Parse() (cons Cons, err error) {
 	return
 }
 
-func (t Tokens) findClose(start int) (int, error) {
+func (tokens Tokens) findClose(start int) (int, error) {
 	depth := 1
-	for i := start; i < len(t); i++ {
-		t := t[i]
+	for i := start; i < len(tokens); i++ {
+		t := tokens[i]
 		switch t.typ {
 		case openToken:
 			depth++

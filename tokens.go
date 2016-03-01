@@ -2,6 +2,8 @@ package goscheme
 
 import (
 	"fmt"
+	"io"
+	"io/ioutil"
 	"regexp"
 	"strconv"
 )
@@ -56,11 +58,14 @@ func patterns() []pattern {
 }
 
 // NewTokens returns a Token stream parsed from the current input.
-// TODO(markcol): Convert to use io.Reader interface.
-func NewTokens(program string) (tokens Tokens) {
-	for pos := 0; pos < len(program); {
+func NewTokens(r io.Reader) (tokens Tokens, err error) {
+	buf, err := ioutil.ReadAll(r)
+	if err != nil {
+		return
+	}
+	for pos := 0; pos < len(buf); {
 		for _, pattern := range patterns() {
-			if matches := pattern.regexp.FindStringSubmatch(program[pos:]); matches != nil {
+			if matches := pattern.regexp.FindStringSubmatch(string(buf[pos:])); matches != nil {
 				if len(matches) > 1 {
 					tokens = append(tokens, &Token{pattern.typ, matches[1]})
 				}

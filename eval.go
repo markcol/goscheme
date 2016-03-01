@@ -1,7 +1,14 @@
 package goscheme
 
-func EvalString(line string) (Value, error) {
-	expanded, err := NewTokens(line).Expand()
+import "io"
+
+// Eval evaluates the contents of the reader in the current context.
+func Eval(r io.Reader) (Value, error) {
+	tokens, err := NewTokens(r)
+	if err != nil {
+		return Nil, err
+	}
+	expanded, err := tokens.Expand()
 	if err != nil {
 		return Nil, err
 	}

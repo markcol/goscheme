@@ -2,6 +2,7 @@ package goscheme
 
 import (
 	"fmt"
+	"strings"
 	"testing"
 )
 
@@ -53,7 +54,7 @@ func TestEval(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		actual, err := EvalString(test.in)
+		actual, err := Eval(strings.NewReader(test.in))
 		if err != nil {
 			t.Error(err)
 		} else if fmt.Sprintf("%v", actual) != test.out {
@@ -76,7 +77,7 @@ func TestEvalFailures(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		if _, err := EvalString(test.in); err == nil || err.Error() != test.out {
+		if _, err := Eval(strings.NewReader(test.in)); err == nil || err.Error() != test.out {
 			t.Errorf("Parse('%v'), want error '%v', got '%v'", test.in, test.out, err)
 		}
 	}

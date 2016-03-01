@@ -2,6 +2,7 @@ package goscheme
 
 import (
 	"fmt"
+	"strings"
 	"testing"
 )
 
@@ -32,7 +33,10 @@ func TestNewTokens(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		x := NewTokens(test.in)
+		x, err := NewTokens(strings.NewReader(test.in))
+		if err != nil {
+			t.Errorf("NewTokens returned an error: \"%v\"", err)
+		}
 		if !equalSlices(x, test.out) {
 			t.Errorf("NewTokens \"%v\" gives \"%v\", expected \"%v\"", test.in, x, test.out)
 		}
@@ -48,7 +52,11 @@ func TestParse(t *testing.T) {
 		{"(+ (+ 1 2) 3)", "((+ (+ 1 2) 3))"},
 	}
 	for _, test := range tests {
-		if parsed, err := NewTokens(test.in).Parse(); err != nil {
+		tokens, err := NewTokens(strings.NewReader(test.in))
+		if err != nil {
+			t.Errorf("NewTokens encountered an error: \"%v\"", err)
+		}
+		if parsed, err := tokens.Parse(); err != nil {
 			t.Errorf("%v\n", err)
 		} else {
 			result := fmt.Sprintf("%v", parsed.String())
@@ -64,7 +72,11 @@ func TestParseFailures(t *testing.T) {
 		"(42",
 	}
 	for _, in := range tests {
-		if x, err := NewTokens(in).Parse(); err == nil {
+		tokens, err := NewTokens(strings.NewReader(in))
+		if err != nil {
+			t.Errorf("newTokens return an error: \"%v\"", err)
+		}
+		if x, err := tokens.Parse(); err == nil {
 			t.Errorf("Parse('%v') = '%v', want error", in, x)
 		}
 	}

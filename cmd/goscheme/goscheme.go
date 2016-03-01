@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"bytes"
 	"flag"
 	"fmt"
 	"io/ioutil"
@@ -22,16 +23,18 @@ func main() {
 		if output, err := ioutil.ReadFile(*file); err != nil {
 			fmt.Printf("ERROR: %v\n", err)
 		} else {
-			if _, err := goscheme.EvalString(string(output)); err != nil {
+			if _, err := goscheme.Eval(bytes.NewReader(output)); err != nil {
 				fmt.Printf("ERROR: %v\n", err)
 			}
 		}
 	} else {
-		if output, err := ioutil.ReadAll(bufio.NewReader(os.Stdin)); err != nil {
+		buf, err := ioutil.ReadAll(bufio.NewReader(os.Stdin))
+		if err != nil {
 			fmt.Printf("ERROR: %v\n", err)
-		} else {
-			goscheme.EvalString(string(output))
+			os.Exit(1)
 		}
+		output := bytes.NewReader(buf)
+		goscheme.Eval(output)
 	}
 }
 
@@ -53,7 +56,7 @@ func Repl() {
 			expr = ""
 		} else if openCount == closeCount {
 			if strings.TrimSpace(expr) != "" {
-				if response, err := goscheme.EvalString(expr); err != nil {
+				if response, err := goscheme.Eval(strings.NewReader(expr)); err != nil {
 					fmt.Printf("ERROR: %v\n", err)
 				} else {
 					if response == goscheme.Nil {

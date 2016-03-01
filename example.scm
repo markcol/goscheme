@@ -7,6 +7,7 @@
     )
   )
 ))
+
 (display (quote Incrementor:) (inc))
 (display (quote Incrementor:) (inc))
 (display (quote Incrementor:) (inc))
@@ -18,4 +19,5 @@
   (display (quote Loop:) i)
   (if (> i 1) (loop (- i 1)))
 ))
+
 (loop 5)

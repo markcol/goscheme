@@ -1,6 +1,7 @@
 # Scheme R5RS Compliance
-- Single quote alias for (quote ...)
+
 - [Predicate Uniqueness](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-2.html#%_toc_%_sec_3.2)
+
   - boolean?
   - symbol?
   - char?
@@ -12,41 +13,50 @@
 
 - [Tail Recursion](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-2.html#%_toc_%_sec_3.5)
 - [Conditionals](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-2.html#%_toc_%_sec_4.2.1)
+
   - cond _(library)_
   - case _(library)_
   - and  _(library)_
   - or  _(library)_
 
 - [Binding Constructs](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-2.html#%_toc_%_sec_4.2.2)
+
   - let _(library)_
   - let* _(library)_
   - letrec _(library)_
 
 - [Sequencing](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-2.html#%_toc_%_sec_4.2.3)
+
   - begin _(library)_
 
 - [Iteration](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-2.html#%_toc_%_sec_4.2.4)
+
   - do _(library)_
   - let _(library)_
 
 - [Delayed Evalutation](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-2.html#%_toc_%_sec_4.2.5)
+
   - delay _(library)_
 
 - [Quasiquotation](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-2.html#%_toc_%_sec_4.2.6)
+
   - quasiquote
   - qq
 
 - [Macros](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-2.html#%_toc_%_sec_4.3.1)
+
   - let-syntax
   - letrec-syntax
   - syntax-rules
 
 - [Equivalence Predicates](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-2.html#%_toc_%_sec_6.1)
+
   - eqv?
   - eq?
   - equal?
 
 - [Numerical Operations](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-2.html#%_toc_%_sec_6.2.5)
+
   - number?
   - complex?
   - real?
@@ -96,10 +106,12 @@
   - string->number
 
 - [Booleans](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-2.html#%_toc_%_sec_6.3.1)
+
   - not _(library)_
   - boolean? _(library)_
 
 - [Pairs and Lists](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-2.html#%_toc_%_sec_6.3.2)
+
   - pair?
   - cons
   - car
@@ -122,11 +134,13 @@
   - assoc _(library)_
 
 - [Symbols](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-2.html#%_toc_%_sec_6.3.3)
+
   - symbol?
   - symbol->string
   - string->symbol
 
 - [Characters](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-2.html#%_toc_%_sec_6.3.4)
+
   - char?
   - char=?
   - char<?
@@ -149,6 +163,7 @@
   - char-downcase _(library)_
 
 - [Strings](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-2.html#%_toc_%_sec_6.3.5)
+
   - string?
   - make-string
   - string _(library)_
@@ -173,6 +188,7 @@
   - string-fill! _(library)_
 
 - [Vectors](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-2.html#%_toc_%_sec_6.3.6)
+
   - vector?
   - make-vector
   - vector _(library)_
@@ -184,6 +200,7 @@
   - vector-fill _(library)_
 
 - [Control Features](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-2.html#%_toc_%_sec_6.4)
+
   - procedure?
   - apply
   - map _(library)_
@@ -195,12 +212,14 @@
   - dynamic-wind
 
 - [Eval](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-2.html#%_toc_%_sec_6.5)
+
   - eval
   - scheme-report-environment
   - null-environment
   - interaction-environment _(optional)_
 
 - [Ports](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-2.html#%_toc_%_sec_6.6.1)
+
   - call-with-input-file
   - call-with-output-file
   - input-port?
@@ -215,6 +234,7 @@
   - close-output-port
 
 - [Input](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-2.html#%_toc_%_sec_6.6.2)
+
   - read
   - read-char
   - peek-char
@@ -222,6 +242,7 @@
   - char-ready?
 
 - [Output](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-2.html#%_toc_%_sec_6.6.3)
+
   - write
   - display
   - newline
@@ -229,11 +250,13 @@
   - current-output-port
 
 - [System Interface](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-2.html#%_toc_%_sec_6.6.4)
+
   - load _(optional)_
   - transcript-on _(optional)_
   - transcript-off _(optional)_
 
 # Implementation Changes
+
 - Replace usage of Cons.Sexp() w/ Cons.Map and Cons.Len
 - Replace evalValue(Value) w/ Eval(Cons)
 - Use interface for Value.val instead of interface{}
@@ -244,18 +267,22 @@
 - Remove naked returns
 - Add methods to Cons
 - Add support for Line/pos in error messages
+
   - Store pos in token
   - Store token in value
   - Calculate line/pos lazily when outputting
 
 - Add short forms
+
   - (define (inc x) (+ x 1)) => (define inc (lambda (x) (+ x 1)))
   - (let ((a 1) (b 2)) (+ a b)) => ((lambda (a b) (+ a b)) 1 2)
   - (list a b) => (cons a (cons b ()))
   - (a . b) => (cons a b)
 
 # Language Extensions
+
 - Implement tapping into Go packages?
+
   - Use [pkgreflect](https://github.com/ungerik/pkgreflect) to create maps like [Clojure Java interop](http://clojure.org/java_interop)
 
     ```lisp
@@ -270,6 +297,7 @@
 - Support for [modules](http://www.htus.org/Book/Staging/how-to-use-modules/)?
 
 # Sceme Requests for Implementation (SFRIs)
+
 - [SRFI 0](http://srfi.schemers.org/srfi-0/srfi-0.html): Feature-based conditional expansion construct
 - [SRFI 1](http://srfi.schemers.org/srfi-1/srfi-1.html): List Library
 - [SRFI 2](http://srfi.schemers.org/srfi-2/srfi-2.html): AND-LET_: an AND with local bindings, a guarded LET_ special form

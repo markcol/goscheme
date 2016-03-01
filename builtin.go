@@ -19,13 +19,18 @@ var builtin_commands = map[string]string{
 	"car":     "Car",
 	"cdr":     "Cdr",
 	"symbol?": "Symbolp",
+	"pair?":   "Pairp",
 }
 
 func (Builtin) Symbolp(vars ...Value) (Value, error) {
-	if len(vars) != 1 {
-		return False, fmt.Errorf("Badly formatted arguments: %v", vars)
+	if len(vars) == 1 && vars[0].typ == symbolValue {
+		return True, nil
 	}
-	if vars[0].typ == symbolValue {
+	return False, nil
+}
+
+func (Builtin) Pairp(vars ...Value) (Value, error) {
+	if len(vars) == 1 && vars[0].typ == consValue {
 		return True, nil
 	}
 	return False, nil

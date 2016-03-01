@@ -54,6 +54,16 @@ func TestEval(t *testing.T) {
 	evalForms(t, tests)
 }
 
+func TestPair(t *testing.T) {
+	var tests = []expectVal{
+		{"(pair? '(a . b))", "true"},
+		{"(pair? '(a b c))", "true"},
+		{"(pair? '())", "false"},
+		{"(pair? '#(a b))", "false"},
+	}
+	evalForms(t, tests)
+}
+
 func TestIf(t *testing.T) {
 	var tests = []expectVal{
 		{"(if true (+ 1 1) 3)", "2"},

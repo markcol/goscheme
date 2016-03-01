@@ -6,34 +6,33 @@ import (
 	"testing"
 )
 
+type expectVal struct {
+	in, out string
+}
+
+func evalForms(t *testing.T, expect []expectVal) {
+	for _, test := range expect {
+		actual, err := Eval(strings.NewReader(test.in))
+		if err != nil {
+			t.Error(err)
+		} else if fmt.Sprintf("%v", actual) != test.out {
+			t.Errorf("Eval \"%v\" gives \"%v\", want \"%v\"", test.in, actual, test.out)
+		}
+	}
+}
+
 func TestEval(t *testing.T) {
-	var tests = []struct {
-		in  string
-		out string
-	}{
+	var tests = []expectVal{
 		{"()", "()"},
 		{"42", "42"},
 		{"42.0", "42"},
 		{"42.1", "42.1"},
 		{"1 2 3", "3"},
-		{"(+ 42 13)", "55"},
-		{"(+ 42 .1)", "42.1"},
-		{"(+ (+ 1 2 3) 4)", "10"},
-		{"(quote (1 2 3))", "(1 2 3)"},
-		{"(quote (1 (+ 1 2) 3))", "(1 (+ 1 2) 3)"},
-		{"(quote hej)", "hej"},
 		{"(cons 1 2)", "(1 . 2)"},
 		{"(car (cons 1 2))", "1"},
 		{"(cdr (cons 1 2))", "2"},
 		{"(cons 1 ())", "(1)"},
 		{"(cons 1 '(2))", "(1 2)"},
-		{"'hej", "hej"},
-		{"''hej", "(quote hej)"},
-		{"'(hej hopp)", "(hej hopp)"},
-		{"(quote (hej))", "(hej)"},
-		{"(if true (+ 1 1) 3)", "2"},
-		{"(if false 42 1)", "1"},
-		{"(if false 42)", "()"},
 		{"(begin (define x) (if x 1 2))", "2"},
 		{"(define r 3)", "r"},
 		{"(begin 5 (+ 3 4))", "7"},
@@ -52,22 +51,54 @@ func TestEval(t *testing.T) {
 		{"(define inc ((lambda () (begin (define a 0) (lambda () (set! a (+ a 1))))))) (inc) (inc)", "2"},
 		{"(define fact (lambda (n) (if (<= n 1) 1 (* n (fact (- n 1)))))) (fact 20)", "2432902008176640000"},
 	}
+	evalForms(t, tests)
+}
 
-	for _, test := range tests {
-		actual, err := Eval(strings.NewReader(test.in))
-		if err != nil {
-			t.Error(err)
-		} else if fmt.Sprintf("%v", actual) != test.out {
-			t.Errorf("Eval \"%v\" gives \"%v\", want \"%v\"", test.in, actual, test.out)
-		}
+func TestIf(t *testing.T) {
+	var tests = []expectVal{
+		{"(if true (+ 1 1) 3)", "2"},
+		{"(if false 42 1)", "1"},
+		{"(if false 42)", "()"},
 	}
+	evalForms(t, tests)
+}
+
+func TestPlus(t *testing.T) {
+	var tests = []expectVal{
+		{"(+ 42 13)", "55"},
+		{"(+ 42 .1)", "42.1"},
+		{"(+ (+ 1 2 3) 4)", "10"},
+	}
+	evalForms(t, tests)
+}
+
+func TestQuote(t *testing.T) {
+	var tests = []expectVal{
+		{"(quote (1 2 3))", "(1 2 3)"},
+		{"(quote (1 (+ 1 2) 3))", "(1 (+ 1 2) 3)"},
+		{"(quote foo)", "foo"},
+		{"'foo", "foo"},
+		{"''bar", "(quote bar)"},
+		{"'(foo baz blech)", "(foo baz blech)"},
+		{"(quote (foo))", "(foo)"},
+	}
+	evalForms(t, tests)
+}
+
+func TestSymbolp(t *testing.T) {
+	var tests = []expectVal{
+		{"(symbol? 'foo)", "true"},
+		{"(symbol? \"bar\")", "false"},
+		{"(symbol? 'nil)", "true"},
+		{"(symbol? '())", "false"},
+		{"(begin (define r 3) (symbol? r))", "false"},
+		{"(begin (define r 'foo) (symbol? r))", "true"},
+	}
+	evalForms(t, tests)
 }
 
 func TestEvalFailures(t *testing.T) {
-	var tests = []struct {
-		in  string
-		out string
-	}{
+	var tests = []expectVal{
 		{"hello", "Unbound variable: hello"},
 		{"(set! undefined 42)", "Unbound variable: undefined"},
 		{"(lambda (a))", "Ill-formed special form: (lambda (a))"},

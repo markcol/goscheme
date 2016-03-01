@@ -1,16 +1,6 @@
 # Scheme R5RS Compliance
 
 - [Predicate Uniqueness](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-2.html#%_toc_%_sec_3.2)
-
-  - boolean?
-  - symbol?
-  - char?
-  - vector?
-  - pair?
-  - number?
-  - string?
-  - port?
-
 - [Tail Recursion](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-2.html#%_toc_%_sec_3.5)
 - [Conditionals](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-2.html#%_toc_%_sec_4.2.1)
 
@@ -112,7 +102,6 @@
 
 - [Pairs and Lists](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-2.html#%_toc_%_sec_6.3.2)
 
-  - pair?
   - cons
   - car
   - cdr
@@ -135,7 +124,6 @@
 
 - [Symbols](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-2.html#%_toc_%_sec_6.3.3)
 
-  - symbol?
   - symbol->string
   - string->symbol
 
